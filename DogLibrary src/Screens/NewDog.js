@@ -1,17 +1,15 @@
-import React, { useState } from "react";
-import TextComponent from "./TextComponent";
+import React, { useState, useContext } from "react";
+import DogContext from "../Context/DogContext";
+import TextComponent from "../TextComponent";
 import { Card, Grid, Container } from "@mui/material";
-import ButtonComponent from "./ButtonComponent";
+import ButtonComponent from "../InputComponents/ButtonComponent";
 import { useNavigate } from "react-router-dom";
 
-function NewDog({ dogs, setDogs }) {
+function NewDog() {
     const navigate = useNavigate();
+    const { addDog } = useContext(DogContext);
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
-
-    const onNavigateToAllDogs = () => {
-        navigate('/');
-    };
 
     const saveDog = () => {
         if (!name.trim() || !image.trim()) {
@@ -19,20 +17,14 @@ function NewDog({ dogs, setDogs }) {
             return;
         }
 
-        const newDog = {
-            id: dogs.length + 1,
-            name: name.trim(),
-            image: image.trim()
-        };
-        setDogs([...dogs, newDog]);
-        console.log("New Dog added:", newDog);
-        onNavigateToAllDogs();
+        addDog({ name: name.trim(), image: image.trim() });
+        navigate('/');
     };
 
     return (
         <Container>
             <Grid container spacing={2}>
-                <Grid item xs={12} md={12} lg={12}>
+                <Grid item xs={12}>
                     <Card style={{ padding: "20px" }}>
                         <TextComponent 
                             label="Breed's name" 
@@ -46,11 +38,11 @@ function NewDog({ dogs, setDogs }) {
                         />
                     </Card>
                 </Grid>
-                <Grid item xs={12} md={12} lg={12}>
+                <Grid item xs={12}>
                     <ButtonComponent label="Save" onOkClick={saveDog} />
                 </Grid>
-                <Grid item xs={12} md={12} lg={12}>
-                    <ButtonComponent label="Back" onOkClick={onNavigateToAllDogs} />
+                <Grid item xs={12}>
+                    <ButtonComponent label="Back" onOkClick={() => navigate('/')} />
                 </Grid>
             </Grid>
         </Container>

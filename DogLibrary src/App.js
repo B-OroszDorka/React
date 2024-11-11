@@ -1,23 +1,20 @@
-import AllDogs from "./AllDogs";
-import NewDog from "./NewDog";
-import Page404 from "./Page404";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import DogList from "./Dogs";
-import { useState } from "react";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import AllDogs from "./Screens/AllDogs";
+import NewDog from "./Screens/NewDog";
+import { DogProvider } from "./Context/DogContext";
 
 function App() {
-  const [dogs, setDogs] = useState(DogList()); 
-
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" exact element={<AllDogs dogs={dogs} setDogs={setDogs}/>}/>
-        <Route path="/new" element={<NewDog dogs={dogs} setDogs={setDogs}/>}/>
-        <Route path="*" element={<Page404/>}/>
-      </Routes>
-    </BrowserRouter>
-  );
+    return (
+        <DogProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<AllDogs />} />
+                    <Route path="/new" element={<NewDog />} />
+                </Routes>
+            </Router>
+        </DogProvider>
+    );
 }
-
 
 export default App;
